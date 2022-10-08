@@ -1,0 +1,51 @@
+# Elido-Hotkeys
+
+This project contains my yabai configuration as well as hotkey setup using hammmerspoon. This project is for Mac only
+
+- `src/*.lua` is symlinked to `~/.hammerspoon/*.lua`
+- `yabairc` is symlinked to `~/.config/yabai/yabairc`
+
+## Prerequisites
+
+- [Make GNU](https://formulae.brew.sh/formula/make)
+- [Yabai](https://github.com/koekeishiya/yabai)
+- [Hammerspoon](https://github.com/Hammerspoon/hammerspoon)
+- [LuaRocks](https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-macOS)
+    - [luaposix](https://github.com/luaposix/luaposix/)
+
+## Setup
+
+`make setup` - creates symlinks of hammerspoon lua files and yabai config in the appropriate place
+
+## Supported Hotkeys
+
+- ⌥ + ⇧ + ⌃ + `h`: Reload Hammerspoon config
+- ⌥ + ⇧ + ⌃ + `y`: Reload Yabai config
+- ⌥ + `j`: focus window south
+- ⌥ + `k`: focus window north
+- ⌥ + `l`: focus window east
+- ⌥ + `h`: focus window west
+- ⌥ + `m`: minimize current window and focus one in the current space
+- ⌥ + `s`: toggle split
+- ⌥ + `f`: toggle zoom-fullscreen
+- ⌥ + ⇧ + `f`: toggle zoom-parent
+- ⌥ + `b`: toggle balance (equalize the space windows use on the screen)
+- ⌥ + ⇧ + `j`: move window south
+- ⌥ + ⇧ + `k`: move indow north
+- ⌥ + ⇧ + `l`: move window east
+- ⌥ + ⇧ + `h`: move window west
+- ⌥ + `.`: move window to the next space and focus it
+- ⌥ + `,`: move window to the prev space and focus it
+- ⌥ + `[`: move focus to the next display
+- ⌥ + `]`: move focus to the prev display
+- ⌥ + `-`: create a new space on the current display
+- ⌥ + `=`: delete the current space
+- ⌥ + `;`: move focus to prev space
+- ⌥ + `'`: move focus to next space
+
+
+## FAQ
+
+### [Yabai performance issues](https://github.com/koekeishiya/yabai/issues/502#issuecomment-633353477)
+
+Some long-running calls to yabai will hang hammerspoon. The simple solution is to use `hs.task.new` which runs the task on another thread. [Coroutines can be used to wait for the output](https://github.com/koekeishiya/yabai/issues/502#issuecomment-633378939), and we make use of them in [yabai.lue](src/yabai.lua)

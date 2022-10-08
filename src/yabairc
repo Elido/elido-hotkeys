@@ -1,0 +1,24 @@
+#!/bin/zsh
+
+## Load script additions
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+sudo yabai --load-sa
+
+## Default layout to bsp
+yabai -m config layout bsp
+
+## Remove shadows for things that are not floating
+yabai -m config window_shadow float
+
+## Modify opacity of windows that are not focused
+yabai -m config window_opacity on
+yabai -m config window_opacity_duration 0.15
+
+yabai -m config active_window_opacity 1.0
+yabai -m config normal_window_opacity 0.75
+
+# floating windows are always on top (default: off)
+yabai -m config window_topmost on
+
+# add animation to window modifications
+yabai -m config window_animation_duration 0.15
