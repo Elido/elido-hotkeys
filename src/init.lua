@@ -15,7 +15,7 @@ require("yabai")
 
 -- Restart Yabai
 hs.hotkey.bind("alt-shift-ctrl", "y", function()
-    execTaskInShell("brew services restart yabai")
+    execTaskInShellAsync("brew services restart yabai")
 end)
 
 -- Restart Hammerspoon
@@ -23,56 +23,56 @@ hs.hotkey.bind("alt-shift-ctrl", "h", hs.reload)
 
 -- Focus window in direction of focused window (options: north, east, south, west)
 hs.hotkey.bind("alt", "j", function()
-    execTaskInShell("yabai -m window --focus south")
+    execTaskInShellAsync("yabai -m window --focus south")
 end)
 hs.hotkey.bind("alt", "k", function()
-    execTaskInShell("yabai -m window --focus north")
+    execTaskInShellAsync("yabai -m window --focus north")
 end)
 hs.hotkey.bind("alt", "l", function()
-    execTaskInShell("yabai -m window --focus east")
+    execTaskInShellAsync("yabai -m window --focus east")
 end)
 hs.hotkey.bind("alt", "h", function()
-    execTaskInShell("yabai -m window --focus west")
+    execTaskInShellAsync("yabai -m window --focus west")
 end)
 
 -- Minimize window
 hs.hotkey.bind("alt", "m", function()
-    execTaskInShell([[yabai -m window --minimize]])
+    execTaskInShellAsync([[yabai -m window --minimize]])
     focusOnAnyVisibleWindow()
 end)
 
 -- Toggle whether to split vertically or horizontally
 hs.hotkey.bind("alt", "s", function()
-    execTaskInShell("yabai -m window --toggle split")
+    execTaskInShellAsync("yabai -m window --toggle split")
 end)
 
 -- Toggle zoom to fullscreen windowed
 hs.hotkey.bind("alt", "f", function()
-    execTaskInShell("yabai -m window --toggle zoom-fullscreen")
+    execTaskInShellAsync("yabai -m window --toggle zoom-fullscreen")
 end)
 
 --Toggle zoom to full panel
 hs.hotkey.bind("alt-shift", "f", function()
-    execTaskInShell("yabai -m window --toggle zoom-parent")
+    execTaskInShellAsync("yabai -m window --toggle zoom-parent")
 end)
 
 --Balances the windows evenly on the screen
 hs.hotkey.bind("alt", "b", function()
-    execTaskInShell("yabai -m space --balance")
+    execTaskInShellAsync("yabai -m space --balance")
 end)
 
 -- Warp at window in direction of warped window (options: north, east, south, west)
 hs.hotkey.bind("alt-shift", "j", function()
-    execTaskInShell("yabai -m window --warp south")
+    execTaskInShellAsync("yabai -m window --warp south")
 end)
 hs.hotkey.bind("alt-shift", "k", function()
-    execTaskInShell("yabai -m window --warp north")
+    execTaskInShellAsync("yabai -m window --warp north")
 end)
 hs.hotkey.bind("alt-shift", "l", function()
-    execTaskInShell("yabai -m window --warp east")
+    execTaskInShellAsync("yabai -m window --warp east")
 end)
 hs.hotkey.bind("alt-shift", "h", function()
-    execTaskInShell("yabai -m window --warp west")
+    execTaskInShellAsync("yabai -m window --warp west")
 end)
 
 -- Send window to the next space
@@ -86,24 +86,24 @@ end)
 
 -- Switch Displays
 hs.hotkey.bind("alt", "[", function()
-    execTaskInShell("yabai -m display --focus prev")
+    execTaskInShellAsync("yabai -m display --focus prev")
 end)
 hs.hotkey.bind("alt", "]", function()
-    execTaskInShell("yabai -m display --focus next")
+    execTaskInShellAsync("yabai -m display --focus next")
 end)
 
 -- Create Space
 hs.hotkey.bind("alt", "=", function()
-    execTaskInShell("yabai -m space --create")
+    execTaskInShellAsync("yabai -m space --create")
 end)
 hs.hotkey.bind("alt", "-", function()
-    execTaskInShell("yabai -m space --destroy")
+    execTaskInShellAsync("yabai -m space --destroy")
 end)
 
 -- Switch Space
 hs.hotkey.bind("alt", ";", function()
-    execTaskInShell("yabai -m space --focus prev")
+    execTaskInShellAsync("yabai -m space --focus prev")
 end)
 hs.hotkey.bind("alt", "'", function()
-    execTaskInShell("yabai -m space --focus next")
+    execTaskInShellAsync("yabai -m space --focus next")
 end)

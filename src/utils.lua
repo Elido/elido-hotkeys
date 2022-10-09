@@ -36,7 +36,7 @@ function baseCmdWithEnv(cmd)
     return cmdt
 end
 
-function execTaskInShell(cmdWithArgs, callback)
+function execTaskInShellAsync(cmdWithArgs, callback)
     if callback == nil then
         callback = function(exitCode, stdOut, stdErr)  end
     end

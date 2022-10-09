@@ -4,7 +4,7 @@
 
 function focusOnAnyVisibleWindow()
     -- Focus any window that is current visible
-    execTaskInShell([[yabai -m window --focus $(yabai -m query --windows | jq -rj '. | map(select(.["is-visible"] == true)) | .[0].id')]])
+    execTaskInShellAsync([[yabai -m window --focus $(yabai -m query --windows | jq -rj '. | map(select(.["is-visible"] == true)) | .[0].id')]])
 end
 
 function getCurrentWindowId()
@@ -19,8 +19,8 @@ function moveWindowToSpace(space_sel)
         local spacesLen = tonumber(execTaskInShellSync("yabai -m query --spaces | jq -rj '. | length'"))
 
         if spacesLen > 1 then
-            execTaskInShell("yabai -m window --space " .. space_sel):waitUntilExit()
-            execTaskInShell("yabai -m window --focus " .. winId)
+            execTaskInShellAsync("yabai -m window --space " .. space_sel):waitUntilExit()
+            execTaskInShellAsync("yabai -m window --focus " .. winId)
         end
     end)()
 end

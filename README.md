@@ -48,4 +48,4 @@ This project contains my yabai configuration as well as hotkey setup using hammm
 
 ### [Yabai performance issues](https://github.com/koekeishiya/yabai/issues/502#issuecomment-633353477)
 
-Some long-running calls to yabai will hang hammerspoon. The simple solution is to use `hs.task.new` which runs the task on another thread. [Coroutines can be used to wait for the output](https://github.com/koekeishiya/yabai/issues/502#issuecomment-633378939), and we make use of them in [yabai.lue](src/yabai.lua)
+Some long-running calls to yabai will hang hammerspoon. The simple solution is to use `hs.task.new` which runs the task on another thread. [Coroutines can be used to wait for the output](https://github.com/koekeishiya/yabai/issues/502#issuecomment-633378939), and we make use of them in [yabai.lua](src/yabai.lua)
