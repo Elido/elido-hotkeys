@@ -19,27 +19,34 @@ This project contains my yabai configuration as well as hotkey setup using hammm
 
 ## Supported Hotkeys
 
+### Config
 - ⌥ + ⇧ + ⌃ + `h`: Reload Hammerspoon config
-- ⌥ + ⇧ + ⌃ + `y`: Reload Yabai config
-- ⌥ + `j`: focus window south
-- ⌥ + `k`: focus window north
-- ⌥ + `l`: focus window east
-- ⌥ + `h`: focus window west
-- ⌥ + `m`: minimize current window and focus one in the current space
-- ⌥ + `s`: toggle split
-- ⌥ + `f`: toggle zoom-fullscreen
-- ⌥ + ⇧ + `f`: toggle zoom-parent
-- ⌥ + `b`: toggle balance (equalize the space windows use on the screen)
+- ⌥ + ⇧ + ⌃ + `y`: Restart Yabai
+
+### Window
 - ⌥ + ⇧ + `j`: move window south
 - ⌥ + ⇧ + `k`: move indow north
 - ⌥ + ⇧ + `l`: move window east
 - ⌥ + ⇧ + `h`: move window west
+- ⌥ + `f`: toggle window zoom-fullscreen
+- ⌥ + ⇧ + `f`: toggle window zoom-parent
 - ⌥ + `.`: move window to the next space and focus it
 - ⌥ + `,`: move window to the prev space and focus it
-- ⌥ + `[`: move focus to the next display
-- ⌥ + `]`: move focus to the prev display
+- ⌥ + `m`: minimize current window and focus one in the current space
+
+### Space
+- ⌥ + `b`: toggle space balance (equalize the space windows use on the screen)
 - ⌥ + `-`: create a new space on the current display
 - ⌥ + `=`: delete the current space
+- ⌥ + `s`: toggle window in space split
+
+### Focus
+- ⌥ + `j`: focus window south
+- ⌥ + `k`: focus window north
+- ⌥ + `l`: focus window east
+- ⌥ + `h`: focus window west
+- ⌥ + `[`: move focus to the next display
+- ⌥ + `]`: move focus to the prev display
 - ⌥ + `;`: move focus to prev space
 - ⌥ + `'`: move focus to next space
 

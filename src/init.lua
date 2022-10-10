@@ -107,3 +107,8 @@ end)
 hs.hotkey.bind("alt", "'", function()
     execTaskInShellAsync("yabai -m space --focus next")
 end)
+
+-- Toggle float setting of window
+hs.hotkey.bind("alt", "d", function()
+    execTaskInShellAsync("yabai -m window --toggle float")
+end)
