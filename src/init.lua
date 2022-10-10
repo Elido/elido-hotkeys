@@ -18,6 +18,11 @@ hs.hotkey.bind("alt-shift-ctrl", "y", function()
     execTaskInShellAsync("brew services restart yabai")
 end)
 
+-- Shutdown Yabai
+hs.hotkey.bind("alt-shift-ctrl", "s", function()
+    execTaskInShellAsync("brew services stop yabai")
+end)
+
 -- Restart Hammerspoon
 hs.hotkey.bind("alt-shift-ctrl", "h", hs.reload)
 
@@ -111,4 +116,23 @@ end)
 -- Toggle float setting of window
 hs.hotkey.bind("alt", "d", function()
     execTaskInShellAsync("yabai -m window --toggle float")
+end)
+
+
+-- Debugging hotkeys
+
+-- Get the current windows in focus
+hs.hotkey.bind("alt-shift", "d", function()
+    coroutine.wrap(function()
+        -- Log the window details to the hammerspoon console
+        log.i(getAllFocusedWindows())
+    end)()
+end)
+
+-- Get the current windows for the focused app
+hs.hotkey.bind("alt-shift", "c", function()
+    coroutine.wrap(function()
+        -- Log the window details to the hammerspoon console
+        log.i(getAllWindowsForFocusedApp())
+    end)()
 end)

@@ -10,6 +10,7 @@ This project contains my yabai configuration as well as hotkey setup using hammm
 - [Make GNU](https://formulae.brew.sh/formula/make)
 - [Yabai](https://github.com/koekeishiya/yabai)
 - [Hammerspoon](https://github.com/Hammerspoon/hammerspoon)
+- [jq](https://formulae.brew.sh/formula/jq)
 - [LuaRocks](https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-macOS)
     - [luaposix](https://github.com/luaposix/luaposix/)
 
@@ -22,6 +23,7 @@ This project contains my yabai configuration as well as hotkey setup using hammm
 ### Config
 - ⌥ + ⇧ + ⌃ + `h`: Reload Hammerspoon config
 - ⌥ + ⇧ + ⌃ + `y`: Restart Yabai
+- ⌥ + ⇧ + ⌃ + `s`: Shutdown Yabai
 
 ### Window
 - ⌥ + ⇧ + `j`: move window south
@@ -51,6 +53,9 @@ This project contains my yabai configuration as well as hotkey setup using hammm
 - ⌥ + `;`: move focus to prev space
 - ⌥ + `'`: move focus to next space
 
+### Debug
+- ⌥ + ⇧ + `d`: Print all focused windows to hammerspoon console
+- ⌥ + ⇧ + `c`: Print all windows of the focused app to hammerspoon console
 
 ## FAQ
 
