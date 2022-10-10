@@ -33,6 +33,7 @@ This project contains my yabai configuration as well as hotkey setup using hammm
 - ⌥ + `.`: move window to the next space and focus it
 - ⌥ + `,`: move window to the prev space and focus it
 - ⌥ + `m`: minimize current window and focus one in the current space
+- ⌥ + `d`: toggle whether the currently focused window floats or not
 
 ### Space
 - ⌥ + `b`: toggle space balance (equalize the space windows use on the screen)
