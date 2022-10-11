@@ -1,6 +1,6 @@
 # Elido-Hotkeys
 
-This project contains my yabai configuration as well as hotkey setup using hammmerspoon. This project is for Mac only
+This project contains my yabai configuration as well as hotkey setup using hammerspoon. This project is for Mac only
 
 - `src/*.lua` is symlinked to `~/.hammerspoon/*.lua`
 - `yabairc` is symlinked to `~/.config/yabai/yabairc`
