@@ -13,6 +13,7 @@ This project contains my yabai configuration as well as hotkey setup using hamme
 - [jq](https://formulae.brew.sh/formula/jq)
 - [LuaRocks](https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-macOS)
     - [luaposix](https://github.com/luaposix/luaposix/)
+    - [lua-cjson](https://kyne.com.au/~mark/software/lua-cjson-manual.html)
 
 ## Setup
 
@@ -34,6 +35,8 @@ This project contains my yabai configuration as well as hotkey setup using hamme
 - ⌥ + ⇧ + `f`: toggle window zoom-parent
 - ⌥ + `.`: move window to the next space and focus it
 - ⌥ + `,`: move window to the prev space and focus it
+- ⌥ + ⇧ + `.`: move window to the next display and focus it
+- ⌥ + ⇧ + `,`: move window to the prev display and focus it
 - ⌥ + `m`: minimize current window and focus one in the current space
 - ⌥ + `d`: toggle whether the currently focused window floats or not
 

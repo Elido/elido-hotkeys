@@ -80,6 +80,22 @@ hs.hotkey.bind("alt-shift", "h", function()
     execTaskInShellAsync("yabai -m window --warp west")
 end)
 
+-- Send Window to next display
+hs.hotkey.bind("alt-shift", ".", function()
+    coroutine.wrap(function()
+        log.i("Attempting to move to next display")
+        moveWindowToDisplayLTR("next")
+    end)()
+end)
+
+-- Send Window to next display
+hs.hotkey.bind("alt-shift", ",", function()
+    coroutine.wrap(function()
+        log.i("Attempting to move to prev display")
+        moveWindowToDisplayLTR("prev")
+    end)()
+end)
+
 -- Send window to the next space
 hs.hotkey.bind("alt", ".", function()
     moveWindowToSpace("next")
@@ -136,3 +152,4 @@ hs.hotkey.bind("alt-shift", "c", function()
         log.i(getAllWindowsForFocusedApp())
     end)()
 end)
+
