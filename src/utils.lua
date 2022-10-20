@@ -4,6 +4,13 @@
 
 px = require("posix.unistd")
 
+function cwrap(func)
+    return function()
+        coroutine.wrap(func)()
+    end
+end
+
+
 function dump(o)
     if type(o) == 'table' then
         local s = '{ '
@@ -37,12 +44,9 @@ function baseCmdWithEnv(cmd)
 end
 
 function execTaskInShellAsync(cmdWithArgs, callback)
-    if callback == nil then
-        callback = function(exitCode, stdOut, stdErr)  end
-    end
-    local t = hs.task.new(os.getenv("SHELL"),callback, {"-l", "-i", "-c", cmdWithArgs})
-    t:start()
-    return t
+    coroutine.wrap(function()
+        execTaskInShellSync(cmdWithArgs, callback)
+    end)()
 end
 
 function execTaskInShellSync(cmdWithArgs, callback)
@@ -70,4 +74,15 @@ function execTaskInShellSync(cmdWithArgs, callback)
     end
 
     return out
+end
+
+function getenv(name)
+    local val = os.getenv(name)
+    if val == nil then
+        val = execTaskInShellSync("echo -n $"..name)
+    end
+    if val == nil then
+        val = ""
+    end
+    return val
 end

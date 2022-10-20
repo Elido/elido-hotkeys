@@ -2,7 +2,7 @@ local json = require('cjson')
 
 function focusOnAnyVisibleWindow()
     -- Focus any window that is current visible
-    execTaskInShellAsync([[yabai -m window --focus $(yabai -m query --windows | jq -rj '. | map(select(.["is-visible"] == true)) | .[0].id')]])
+    execTaskInShellSync([[yabai -m window --focus $(yabai -m query --windows | jq -rj '. | map(select(.["is-visible"] == true)) | .[0].id')]])
 end
 
 function getFocusedWindowId()
@@ -91,8 +91,8 @@ function moveWindowToSpace(space_sel, winId)
         local spacesLen = tonumber(execTaskInShellSync("yabai -m query --spaces | jq -rj '. | length'"))
 
         if spacesLen > 1 then
-            execTaskInShellAsync("yabai -m window --space " .. space_sel):waitUntilExit()
-            execTaskInShellAsync("yabai -m window --focus " .. winId)
+            execTaskInShellSync("yabai -m window --space " .. space_sel)
+            execTaskInShellSync("yabai -m window --focus " .. winId)
         end
     end)()
 end
