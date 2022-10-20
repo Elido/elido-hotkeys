@@ -45,8 +45,6 @@ This project contains my yabai configuration as well as hotkey setup using hamme
 | ⌥ + `d`         | toggle whether the currently focused window floats or not                                                                          |
 
 ### Space
-<div>hi</div>
-
 | hotkey          | description                                                         |
 |-----------------|---------------------------------------------------------------------|
 | ⌥ + `b`         | toggle space balance (equalize the space windows use on the screen) |
