@@ -35,8 +35,8 @@ This project contains my yabai configuration as well as hotkey setup using hamme
 - ⌥ + ⇧ + `f`: toggle window zoom-parent
 - ⌥ + `.`: move window to the next space and focus it
 - ⌥ + `,`: move window to the prev space and focus it
-- ⌥ + ⇧ + `.`: move window to the next display and focus it
-- ⌥ + ⇧ + `,`: move window to the prev display and focus it
+- ⌥ + ⇧ + `.`: move window to the next display and focus it. Displays are ordered left to right according to their position from the main display
+- ⌥ + ⇧ + `,`: move window to the prev display and focus it. Displays are ordered left to right according to their position from the main display
 - ⌥ + `m`: minimize current window and focus one in the current space
 - ⌥ + `d`: toggle whether the currently focused window floats or not
 
@@ -55,10 +55,6 @@ This project contains my yabai configuration as well as hotkey setup using hamme
 - ⌥ + `]`: move focus to the prev display
 - ⌥ + `;`: move focus to prev space
 - ⌥ + `'`: move focus to next space
-
-### Debug
-- ⌥ + ⇧ + `d`: Print all focused windows to hammerspoon console
-- ⌥ + ⇧ + `c`: Print all windows of the focused app to hammerspoon console
 
 ## FAQ
 

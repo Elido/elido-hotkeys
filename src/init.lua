@@ -136,20 +136,30 @@ end)
 
 
 -- Debugging hotkeys
+if os.getenv("ELIDO_HOTKEY_DEBUG") == "1" then
 
--- Get the current windows in focus
-hs.hotkey.bind("alt-shift", "d", function()
-    coroutine.wrap(function()
-        -- Log the window details to the hammerspoon console
-        log.i(getAllFocusedWindows())
-    end)()
-end)
+    -- Get the current windows in focus
+    hs.hotkey.bind("alt-shift", "d", function()
+        coroutine.wrap(function()
+            -- Log the window details to the hammerspoon console
+            log.i(getAllFocusedWindows())
+        end)()
+    end)
 
--- Get the current windows for the focused app
-hs.hotkey.bind("alt-shift", "c", function()
-    coroutine.wrap(function()
-        -- Log the window details to the hammerspoon console
-        log.i(getAllWindowsForFocusedApp())
-    end)()
-end)
+    -- Get the current windows for the focused app
+    hs.hotkey.bind("alt-shift", "c", function()
+        coroutine.wrap(function()
+            -- Log the window details to the hammerspoon console
+            log.i(getAllWindowsForFocusedApp())
+        end)()
+    end)
+
+    -- Get the focused space
+    hs.hotkey.bind("alt-shift", "z", function()
+        coroutine.wrap(function()
+            -- Log the window details to the hammerspoon console
+            log.i(dump(getFocusedSpace()))
+        end)()
+    end)
+end
 

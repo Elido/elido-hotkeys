@@ -17,8 +17,13 @@ function getAllFocusedWindows()
     return execTaskInShellSync("yabai -m query --windows | jq -rj '. | map(select(.[\"has-focus\"] == true)) | .'")
 end
 
+-- This can be a space different from the space of the currently focused window. This is especially true if the window doesn't have a top menu
 function getFocusedSpace()
     return json.decode(execTaskInShellSync("yabai -m query --spaces | jq -rj '. | map(select(.[\"has-focus\"] == true)) | .[0]'"))
+end
+
+function getFocusedWindow()
+    return json.decode(execTaskInShellSync("yabai -m query --windows | jq -rj '. | map(select(.[\"has-focus\"] == true)) | .[0]'"))
 end
 
 function getSortedDisplays()
@@ -47,14 +52,14 @@ end
 
 function moveWindowToDisplayLTR(display_sel)
     local displays = getSortedDisplays()
-    local space = getFocusedSpace()
+    local win = getFocusedWindow()
     local focusedIndex = 0
     local targetIndex = 1
     local length = 0
 
     for k, v in ipairs(displays) do
         length = length + 1
-        if v["index"] == space["display"] then
+        if v["index"] == win["display"] then
             focusedIndex = k
         end
     end
@@ -65,9 +70,9 @@ function moveWindowToDisplayLTR(display_sel)
        targetIndex = ((focusedIndex - 2) % length) + 1
     end
 
-    log.i("focused index:", focusedIndex)
-    log.i("targeted index:", targetIndex)
-    log.i("space index: ", math.floor(displays[targetIndex]["spaces"][1]))
+    -- log.i("focused index:", focusedIndex)
+    -- log.i("targeted index:", targetIndex)
+    -- log.i("space index: ", math.floor(displays[targetIndex]["spaces"][1]))
 
     moveWindowToSpace(math.floor(displays[targetIndex]["spaces"][1]))
 end
