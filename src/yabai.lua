@@ -1,7 +1,3 @@
----
---- DateTime: 10/5/22 7:18 PM
----
-
 local json = require('cjson')
 
 function focusOnAnyVisibleWindow()
@@ -17,7 +13,8 @@ function getAllFocusedWindows()
     return execTaskInShellSync("yabai -m query --windows | jq -rj '. | map(select(.[\"has-focus\"] == true)) | .'")
 end
 
--- This can be a space different from the space of the currently focused window. This is especially true if the window doesn't have a top menu
+-- Gets the currently focused space. It can be a space different from the space of the currently focused window.
+-- This is especially true if the window doesn't have a top menu
 function getFocusedSpace()
     return json.decode(execTaskInShellSync("yabai -m query --spaces | jq -rj '. | map(select(.[\"has-focus\"] == true)) | .[0]'"))
 end
@@ -53,7 +50,7 @@ end
 function moveWindowToDisplayLTR(display_sel)
     local displays = getSortedDisplays()
     local win = getFocusedWindow()
-    local focusedIndex = 0
+    local focusedIndex = 1
     local targetIndex = 1
     local length = 0
 
@@ -70,11 +67,7 @@ function moveWindowToDisplayLTR(display_sel)
        targetIndex = ((focusedIndex - 2) % length) + 1
     end
 
-    -- log.i("focused index:", focusedIndex)
-    -- log.i("targeted index:", targetIndex)
-    -- log.i("space index: ", math.floor(displays[targetIndex]["spaces"][1]))
-
-    moveWindowToSpace(math.floor(displays[targetIndex]["spaces"][1]))
+    moveWindowToSpace(math.floor(displays[targetIndex]["spaces"][1]), math.floor(win["id"]))
 end
 
 function getAllWindowsForFocusedApp()
@@ -85,25 +78,16 @@ function getAllWindowsForFocusedApp()
     ]=])
 end
 
-function moveWindowToSpace(space_sel)
+-- Move window to selected space. If a window id is not provided, the currently focused window id is used
+function moveWindowToSpace(space_sel, winId)
     -- This call will hang hammerspoon if done on the main thread (https://github.com/koekeishiya/yabai/issues/502#issuecomment-633353477)
     -- so we need to call it using hs.task and we throw it in a coroutines so we can wait for the command to complete
     coroutine.wrap(function()
-        local winId = getFocusedWindowId()
-        local spacesLen = tonumber(execTaskInShellSync("yabai -m query --spaces | jq -rj '. | length'"))
 
-        if spacesLen > 1 then
-            execTaskInShellAsync("yabai -m window --space " .. space_sel):waitUntilExit()
-            execTaskInShellAsync("yabai -m window --focus " .. winId)
+        if winId == null then
+            winId = getFocusedWindowId()
         end
-    end)()
-end
 
-function moveWindowToDisplay(space_sel)
-    -- This call will hang hammerspoon if done on the main thread (https://github.com/koekeishiya/yabai/issues/502#issuecomment-633353477)
-    -- so we need to call it using hs.task and we throw it in a coroutines so we can wait for the command to complete
-    coroutine.wrap(function()
-        local winId = getFocusedWindowId()
         local spacesLen = tonumber(execTaskInShellSync("yabai -m query --spaces | jq -rj '. | length'"))
 
         if spacesLen > 1 then
