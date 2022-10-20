@@ -2,9 +2,6 @@
 
 This project contains my yabai configuration as well as hotkey setup using hammerspoon. This project is for Mac only
 
-- `src/*.lua` is symlinked to `~/.hammerspoon/*.lua`
-- `yabairc` is symlinked to `~/.config/yabai/yabairc`
-
 ## Prerequisites
 
 - [Make GNU](https://formulae.brew.sh/formula/make)
@@ -18,6 +15,9 @@ This project contains my yabai configuration as well as hotkey setup using hamme
 ## Setup
 
 `make setup` - creates symlinks of hammerspoon lua files and yabai config in the appropriate place
+- `src/*.lua` is symlinked to `~/.hammerspoon/*.lua`
+- `yabairc` is symlinked to `~/.config/yabai/yabairc`
+
 
 ## Supported Hotkeys
 
