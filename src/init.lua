@@ -121,11 +121,11 @@ cwrap(function()
 
     -- Send window to the next space
     hs.hotkey.bind("alt", ".", cwrap(function()
-        moveWindowToSpace("next")
+        moveWindowToSpace("east")
     end))
 
     hs.hotkey.bind("alt", ",", cwrap(function()
-        moveWindowToSpace("prev")
+        moveWindowToSpace("west")
     end))
 
     -- Switch Displays

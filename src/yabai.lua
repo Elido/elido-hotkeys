@@ -61,9 +61,9 @@ function moveWindowToDisplayLTR(display_sel)
         end
     end
 
-    if display_sel == "next" then
+    if display_sel == "east" then
        targetIndex = (focusedIndex % length) + 1
-    elseif display_sel == "prev" then
+    elseif display_sel == "west" then
        targetIndex = ((focusedIndex - 2) % length) + 1
     end
 
