@@ -29,20 +29,20 @@ This project contains my yabai configuration as well as hotkey setup using hamme
 | ⌥ + ⇧ + ⌃ + `s` | Shutdown Yabai            |
 
 ### Window
-| hotkey &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | description                                                                                                                      |
-|---------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
-| ⌥ + ⇧ + `j`                                                                                       | move window south                                                                                                                |
-| ⌥ + ⇧ + `k`                                                                                       | move window north                                                                                                                |
-| ⌥ + ⇧ + `l`                                                                                       | move window east                                                                                                                 |
-| ⌥ + ⇧ + `h`                                                                                       | move window west                                                                                                                 |
-| ⌥ + `f`                                                                                           | toggle window zoom - fullscreen                                                                                                  |
-| ⌥ + ⇧ + `f`                                                                                       | toggle window zoom - parent                                                                                                      |
-| ⌥ + `.`                                                                                           | move window to the next space and focus it                                                                                       |
-| ⌥ + `,`                                                                                           | move window to the prev space and focus it                                                                                       |
-| ⌥ + ⇧ + `.`                                                                                       | move window to the east display and focus it                                                                                     |
-| ⌥ + ⇧ + `,`                                                                                       | move window to the west display and focus |
-| ⌥ + `m`                                                                                           | minimize current window and focus one in the current space                                                                       |
-| ⌥ + `d`                                                                                           | toggle whether the currently focused window floats or not                                                                        |
+| hotkey      | description                                                |
+|-------------|------------------------------------------------------------|
+| ⌥ + ⇧ + `j` | move window south                                          |
+| ⌥ + ⇧ + `k` | move window north                                          |
+| ⌥ + ⇧ + `l` | move window east                                           |
+| ⌥ + ⇧ + `h` | move window west                                           |
+| ⌥ + `f`     | toggle window zoom - fullscreen                            |
+| ⌥ + ⇧ + `f` | toggle window zoom - parent                                |
+| ⌥ + `.`     | move window to the next space and focus it                 |
+| ⌥ + `,`     | move window to the prev space and focus it                 |
+| ⌥ + ⇧ + `.` | move window to the east display and focus it               |
+| ⌥ + ⇧ + `,` | move window to the west display and focus it               |
+| ⌥ + `m`     | minimize current window and focus one in the current space |
+| ⌥ + `d`     | toggle whether the currently focused window floats or not  |
 
 ### Space
 | hotkey          | description                                                         |
