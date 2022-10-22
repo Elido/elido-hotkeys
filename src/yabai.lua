@@ -84,7 +84,7 @@ function moveWindowToSpace(space_sel, winId)
     -- so we need to call it using hs.task and we throw it in a coroutines so we can wait for the command to complete
     coroutine.wrap(function()
 
-        if winId == null then
+        if winId == nil then
             winId = getFocusedWindowId()
         end
 
