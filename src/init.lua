@@ -15,8 +15,10 @@ require("yabai")
 
 -- Debugging hotkeys
 cwrap(function()
+	local debugMode = getenv("ELIDO_HOTKEY_DEBUG") == "1"
+
     -- Check if debug mode is enabled
-    if getenv("ELIDO_HOTKEY_DEBUG") == "1" then
+    if debugMode then
         log.i("Debug enabled")
 
         -- Get the current windows in focus
@@ -36,8 +38,6 @@ cwrap(function()
             -- Log the window details to the hammerspoon console
             log.i(dump(getFocusedSpace()))
         end))
-    else
-        log.i("Debug Mode Disabled: ", getenv("ELIDO_HOTKEY_DEBUG"))
     end
 
     -- Restart Yabai
