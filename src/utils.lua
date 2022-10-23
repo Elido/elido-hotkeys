@@ -23,6 +23,17 @@ function dump(o)
     end
 end
 
+function toint(val)
+	if val == nil then
+		return nil
+	end
+	local num = tonumber(val)
+	if num == nil then
+		return nil
+	end
+	return math.floor(tonumber(val))
+end
+
 function read_all(reader)
     local bufsize = 4096
     local out = {}
@@ -47,6 +58,23 @@ function append(source, ...)
 		table.insert(source, v)
 	end
 	return source
+end
+
+function cycleTableIndex(tbl, currentIndex, direction)
+	local targetIndex = 0
+	local length = 0
+
+    for k, v in ipairs(tbl) do
+        length = length + 1
+    end
+
+    if direction == "east" or direction == "next" then
+       targetIndex = (currentIndex % length) + 1
+    elseif direction == "west" or direction == "prev" then
+       targetIndex = ((currentIndex - 2) % length) + 1
+    end
+
+    return targetIndex
 end
 
 -- execTaskInShellSync runs a command and waits for the output. All commands executed with a path environment variable that mirrors a logged in shell
@@ -82,6 +110,11 @@ execTaskInShellSync = (function()
 
 		local t = hs.task.new(os.getenv("SHELL"),function(exitCode, stdOut, stdErr)
 			callback(exitCode, stdOut, stdErr)
+			if debugMode == true then
+				log.i("cmd: ", cmdWithArgs)
+				log.i("out: ", stdOut)
+				log.i("err: ", stdErr)
+			end
 			out = stdOut
 			done = true
 		end, cmd)
@@ -107,7 +140,7 @@ end)()
 function getenv(name)
     local val = os.getenv(name)
     if val == nil then
-        val = execTaskInShellSync("echo -n $"..name)
+        val = execTaskInShellSync("echo -n $"..name, nil, true)
     end
     if val == nil then
         val = ""

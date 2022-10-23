@@ -19,8 +19,24 @@ function getFocusedSpace()
     return json.decode(execTaskInShellSync("yabai -m query --spaces | jq -rj '. | map(select(.[\"has-focus\"] == true)) | .[0]'"))
 end
 
+function getFocusedSpaceIndexFromWindow()
+    local win = getFocusedWindow()
+
+    -- if there's no window then return nil
+    if win == nil then return nil end
+
+    return toint(win["space"])
+end
+
 function getFocusedWindow()
-    return json.decode(execTaskInShellSync("yabai -m query --windows | jq -rj '. | map(select(.[\"has-focus\"] == true)) | .[0]'"))
+    local winStr = execTaskInShellSync("yabai -m query --windows | jq -rj '. | map(select(.[\"has-focus\"] == true)) | .[0]'")
+
+    -- if no winow has focus, return nil
+    if winStr == "null" then
+        return nil
+    end
+
+    return json.decode(winStr)
 end
 
 function getSortedDisplays()
@@ -34,7 +50,6 @@ function getSortedDisplays()
     for k, v in pairs(tab) do
         local xpos = v["frame"]["x"]
         displays[xpos] = v
-
         table.insert(order, xpos)
     end
 
@@ -47,28 +62,6 @@ function getSortedDisplays()
     return sorted
 end
 
-function moveWindowToDisplayLTR(display_sel)
-    local displays = getSortedDisplays()
-    local win = getFocusedWindow()
-    local focusedIndex = 1
-    local targetIndex = 1
-    local length = 0
-
-    for k, v in ipairs(displays) do
-        length = length + 1
-        if v["index"] == win["display"] then
-            focusedIndex = k
-        end
-    end
-
-    if display_sel == "east" then
-       targetIndex = (focusedIndex % length) + 1
-    elseif display_sel == "west" then
-       targetIndex = ((focusedIndex - 2) % length) + 1
-    end
-
-    moveWindowToSpace(math.floor(displays[targetIndex]["spaces"][1]), math.floor(win["id"]))
-end
 
 function getAllWindowsForFocusedApp()
     return execTaskInShellSync([=[
@@ -79,20 +72,97 @@ function getAllWindowsForFocusedApp()
 end
 
 -- Move window to selected space. If a window id is not provided, the currently focused window id is used
+-- This call will hang hammerspoon if done on the main thread (https://github.com/koekeishiya/yabai/issues/502#issuecomment-633353477)
+-- under the hood execTaskInShellSync expects to  be called within a coroutine to solve that issue
 function moveWindowToSpace(space_sel, winId)
-    -- This call will hang hammerspoon if done on the main thread (https://github.com/koekeishiya/yabai/issues/502#issuecomment-633353477)
-    -- so we need to call it using hs.task and we throw it in a coroutines so we can wait for the command to complete
-    coroutine.wrap(function()
+	if winId == nil then
+		winId = getFocusedWindowId()
+	end
 
-        if winId == nil then
-            winId = getFocusedWindowId()
+	local spacesLen = toint(execTaskInShellSync("yabai -m query --spaces | jq -rj '. | length'"))
+
+	if spacesLen > 1 then
+		execTaskInShellSync("yabai -m window --space " .. space_sel)
+		execTaskInShellSync("yabai -m window --focus " .. winId)
+	end
+end
+
+-- Move the window to another space within the current display
+-- If no other space exist, create one
+function moveWindowToSpaceWithinDisplay(space_sel)
+    local win = getFocusedWindow()
+    -- There is no window focused so we do nothing
+    if win == nil then return end
+
+    local currentDisplayIndex = toint(win["display"])
+    local currentSpaceIndex = toint(win["space"])
+	local display = json.decode(execTaskInShellSync([[yabai -m query --displays | jq -rj ". | map(select(.[\"index\"] == ]]..currentDisplayIndex..[[)) | .[0]"]]))
+	local spaces = display["spaces"]
+
+	local spacePos = 1
+	for k, v in pairs(spaces) do
+		if toint(v) == currentSpaceIndex then
+			spacePos = k
+		end
+	end
+
+	local targetSpace = cycleTableIndex(spaces, spacePos, space_sel)
+	if targetSpace ~= spacePos then
+		moveWindowToSpace(toint(spaces[targetSpace]), toint(win["id"]))
+	end
+end
+
+function moveWindowToDisplayLTR(display_sel)
+    local displays = getSortedDisplays()
+    local win = getFocusedWindow()
+    -- There is no window focused so we do nothing
+    if win == nil then return end
+
+    local focusedIndex = 1
+    local targetIndex = 1
+
+    for k, v in ipairs(displays) do
+        if v["index"] == win["display"] then
+            focusedIndex = k
+        end
+    end
+
+	targetIndex = cycleTableIndex(displays, focusedIndex, display_sel)
+
+	-- If there is only one display, behave like you just want to move the space
+	if targetIndex == focusedIndex then
+		moveWindowToSpaceWithinDisplay(display_sel)
+		return
+	end
+
+    moveWindowToSpace(math.floor(displays[targetIndex]["spaces"][1]), math.floor(win["id"]))
+end
+
+function gotoSpace(space_sel)
+    if space_sel == "next" or space_sel == "prev" then
+        local focusedSpaceIndex = getFocusedSpaceIndexFromWindow()
+        local spaces = json.decode(execTaskInShellSync("yabai -m query --spaces"))
+        local spacePos = 0
+
+        for k,v in ipairs(spaces) do
+            -- focusedSpaceIndex might be nil if no window was focused, so we fallback to yabai's space focus
+            if focusedSpaceIndex == nil then
+                if v["has-focus"] == true then
+                    spacePos = k
+                end
+            else
+                if toint(v["index"]) == focusedSpaceIndex then
+                    spacePos = k
+                end
+            end
         end
 
-        local spacesLen = tonumber(execTaskInShellSync("yabai -m query --spaces | jq -rj '. | length'"))
+        targetIndex = cycleTableIndex(spaces, spacePos, space_sel)
+        execTaskInShellSync("yabai -m space --focus "..targetIndex)
+    else
+       execTaskInShellSync("yabai -m space --focus "..space_sel)
+    end
 
-        if spacesLen > 1 then
-            execTaskInShellSync("yabai -m window --space " .. space_sel)
-            execTaskInShellSync("yabai -m window --focus " .. winId)
-        end
-    end)()
+
+
 end

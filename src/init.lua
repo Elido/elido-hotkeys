@@ -4,6 +4,7 @@
 
 -- Setup logger
 log = hs.logger.new("elido-hotkeys", "debug")
+debugMode = false
 
 -- Include external libs
 posix = require("posix")
@@ -15,7 +16,7 @@ require("yabai")
 
 -- Debugging hotkeys
 cwrap(function()
-	local debugMode = getenv("ELIDO_HOTKEY_DEBUG") == "1"
+	debugMode = getenv("ELIDO_HOTKEY_DEBUG") == "1"
 
     -- Check if debug mode is enabled
     if debugMode then
@@ -121,11 +122,11 @@ cwrap(function()
 
     -- Send window to the next space
     hs.hotkey.bind("alt", ".", cwrap(function()
-        moveWindowToSpace("east")
+        moveWindowToSpaceWithinDisplay("next")
     end))
 
     hs.hotkey.bind("alt", ",", cwrap(function()
-        moveWindowToSpace("west")
+        moveWindowToSpaceWithinDisplay("prev")
     end))
 
     -- Switch Displays
@@ -145,12 +146,12 @@ cwrap(function()
     end)
 
     -- Switch Space
-    hs.hotkey.bind("alt", ";", function()
-        execTaskInShellAsync("yabai -m space --focus prev")
-    end)
-    hs.hotkey.bind("alt", "'", function()
-        execTaskInShellAsync("yabai -m space --focus next")
-    end)
+    hs.hotkey.bind("alt", ";", cwrap(function()
+        gotoSpace("prev")
+    end))
+    hs.hotkey.bind("alt", "'", cwrap(function()
+        gotoSpace("next")
+    end))
 
     -- Toggle float setting of window
     hs.hotkey.bind("alt", "d", function()
