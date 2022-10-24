@@ -130,6 +130,8 @@ function moveWindowToSpaceWithinDisplay(space_sel)
 	end
 
 	local targetSpace = cycleTableIndex(spaces, spacePos, space_sel)
+
+    -- if the target is different from the spacePos then move the window!
 	if targetSpace ~= spacePos then
 		moveWindowToSpace(toint(spaces[targetSpace]), toint(win["id"]))
 	end
