@@ -130,12 +130,12 @@ cwrap(function()
     end))
 
     -- Switch Displays
-    hs.hotkey.bind("alt", "[", function()
-        execTaskInShellAsync("yabai -m display --focus prev")
-    end)
-    hs.hotkey.bind("alt", "]", function()
-        execTaskInShellAsync("yabai -m display --focus next")
-    end)
+    hs.hotkey.bind("alt", "[", cwrap(function()
+        gotoDisplay("west")
+    end))
+    hs.hotkey.bind("alt", "]", cwrap(function()
+        gotoDisplay("east")
+    end))
 
     -- Create Space
     hs.hotkey.bind("alt", "=", function()

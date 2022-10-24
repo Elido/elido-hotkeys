@@ -62,13 +62,24 @@ function getSortedDisplays()
     return sorted
 end
 
-
 function getAllWindowsForFocusedApp()
     return execTaskInShellSync([=[
     QUERY=$(yabai -m query --windows);
     APP=$(echo "$QUERY" | jq -rj '. | map(select(.["has-focus"] == true)) | .[0]["app"]');
     echo "$QUERY" | jq -rj ". | map(select(.[\"app\"] == \"$APP\"))"
     ]=])
+end
+
+function getFocusedDisplayIndexFromWindow(displays, win)
+    local focusedIndex = 1
+
+    for k, v in ipairs(displays) do
+        if v["index"] == win["display"] then
+            focusedIndex = k
+        end
+    end
+
+    return focusedIndex
 end
 
 -- Move window to selected space. If a window id is not provided, the currently focused window id is used
@@ -118,16 +129,8 @@ function moveWindowToDisplayLTR(display_sel)
     -- There is no window focused so we do nothing
     if win == nil then return end
 
-    local focusedIndex = 1
-    local targetIndex = 1
-
-    for k, v in ipairs(displays) do
-        if v["index"] == win["display"] then
-            focusedIndex = k
-        end
-    end
-
-	targetIndex = cycleTableIndex(displays, focusedIndex, display_sel)
+    local focusedIndex = getFocusedDisplayIndexFromWindow(displays, win)
+	local targetIndex = cycleTableIndex(displays, focusedIndex, display_sel)
 
 	-- If there is only one display, behave like you just want to move the space
 	if targetIndex == focusedIndex then
@@ -136,6 +139,29 @@ function moveWindowToDisplayLTR(display_sel)
 	end
 
     moveWindowToSpace(math.floor(displays[targetIndex]["spaces"][1]), math.floor(win["id"]))
+end
+
+function gotoDisplay(display_sel)
+    local win = getFocusedWindow()
+    local supportedSel = display_sel == "next" or display_sel == "prev" or display_sel == "east" or display_sel == "west"
+
+    -- There is no window focused or the selection is not supported so use yabai builtin
+    if win == nil or supportedSel == false then
+        execTaskInShellSync("yabai -m display --focus "..display_sel)
+        return
+    end
+
+    local displays = getSortedDisplays()
+    local focusedIndex = getFocusedDisplayIndexFromWindow(displays, win)
+    local targetIndex = cycleTableIndex(displays, focusedIndex, display_sel)
+
+    -- If there is only one display, behave like you just want to goto a space
+    if targetIndex == focusedIndex then
+        gotoSpace(display_sel)
+        return
+    end
+
+    execTaskInShellSync("yabai -m display --focus "..toint(displays[targetIndex]["index"]))
 end
 
 function gotoSpace(space_sel)
@@ -162,7 +188,4 @@ function gotoSpace(space_sel)
     else
        execTaskInShellSync("yabai -m space --focus "..space_sel)
     end
-
-
-
 end
