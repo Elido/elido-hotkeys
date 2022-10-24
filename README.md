@@ -1,6 +1,6 @@
 # Elido-Hotkeys
 
-This project contains my yabai configuration as well as hotkey setup using hammerspoon. This project is for Mac only
+This project contains my yabai configuration as well as hotkey setup using hammerspoon. It's multi-display friendly and supports cycling through spaces and displays. This project is for Mac only
 
 ## Prerequisites
 
@@ -10,7 +10,7 @@ This project contains my yabai configuration as well as hotkey setup using hamme
 - [jq](https://formulae.brew.sh/formula/jq)
 - [LuaRocks](https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-macOS)
     - [luaposix](https://github.com/luaposix/luaposix/)
-    - [lua-cjson](https://kyne.com.au/~mark/software/lua-cjson-manual.html)
+    - [lua-cjson](https://luarocks.org/modules/openresty/lua-cjson)([docs](https://kyne.com.au/~mark/software/lua-cjson-manual.html))
 
 ## Setup
 
@@ -60,8 +60,8 @@ This project contains my yabai configuration as well as hotkey setup using hamme
 | ⌥ + `k`         | focus window north             |
 | ⌥ + `l`         | focus window east              |
 | ⌥ + `h`         | focus window west              |
-| ⌥ + `[`         | move focus to the next display |
-| ⌥ + `]`         | move focus to the prev display |
+| ⌥ + `[`         | move focus to the west display |
+| ⌥ + `]`         | move focus to the east display |
 | ⌥ + `;`         | move focus to prev space       |
 | ⌥ + `'`         | move focus to next space       |
 
@@ -70,3 +70,7 @@ This project contains my yabai configuration as well as hotkey setup using hamme
 ### [Yabai performance issues](https://github.com/koekeishiya/yabai/issues/502#issuecomment-633353477)
 
 Some long-running calls to yabai will hang hammerspoon. The simple solution is to use `hs.task.new` which runs the task on another thread. [Coroutines can be used to wait for the output](https://github.com/koekeishiya/yabai/issues/502#issuecomment-633378939), and we make use of them in [yabai.lua](src/yabai.lua)
+
+### Slow hammerspoon config initial and reload time
+
+We use a `SHELL` with the login flag to pull the `PATH` env and as well as our debug flag `ELIDO_HOTKEYS_DEBUG`. The speed is dependant on the time it takes for your shell prompt to load
