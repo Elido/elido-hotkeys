@@ -82,6 +82,18 @@ function getFocusedDisplayIndexFromWindow(displays, win)
     return focusedIndex
 end
 
+function getFocusedDisplayIndexFromSpace(displays, space)
+    local focusedIndex = 1
+
+    for k, v in ipairs(displays) do
+        if v["index"] == space["display"] then
+            focusedIndex = k
+        end
+    end
+
+    return focusedIndex
+end
+
 -- Move window to selected space. If a window id is not provided, the currently focused window id is used
 -- This call will hang hammerspoon if done on the main thread (https://github.com/koekeishiya/yabai/issues/502#issuecomment-633353477)
 -- under the hood execTaskInShellSync expects to  be called within a coroutine to solve that issue
@@ -146,13 +158,20 @@ function gotoDisplay(display_sel)
     local supportedSel = display_sel == "next" or display_sel == "prev" or display_sel == "east" or display_sel == "west"
 
     -- There is no window focused or the selection is not supported so use yabai builtin
-    if win == nil or supportedSel == false then
+    if supportedSel == false then
         execTaskInShellSync("yabai -m display --focus "..display_sel)
         return
     end
 
     local displays = getSortedDisplays()
-    local focusedIndex = getFocusedDisplayIndexFromWindow(displays, win)
+    local focusedIndex
+
+    if win == nil then
+        focusedIndex = getFocusedDisplayIndexFromSpace(displays,getFocusedSpace())
+    else
+        focusedIndex = getFocusedDisplayIndexFromWindow(displays, win)
+    end
+
     local targetIndex = cycleTableIndex(displays, focusedIndex, display_sel)
 
     -- If there is only one display, behave like you just want to goto a space
@@ -165,7 +184,7 @@ function gotoDisplay(display_sel)
 end
 
 function gotoSpace(space_sel)
-    if space_sel == "next" or space_sel == "prev" then
+    if space_sel == "next" or space_sel == "prev" or space_sel == "east" or space_sel == "west" then
         local focusedSpaceIndex = getFocusedSpaceIndexFromWindow()
         local spaces = json.decode(execTaskInShellSync("yabai -m query --spaces"))
         local spacePos = 0

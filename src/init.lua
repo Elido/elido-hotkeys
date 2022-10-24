@@ -110,13 +110,11 @@ cwrap(function()
 
     -- Send Window to next display
     hs.hotkey.bind("alt-shift", ".", cwrap(function()
-        log.i("Attempting to move to next display")
         moveWindowToDisplayLTR("east")
     end))
 
     -- Send Window to next display
     hs.hotkey.bind("alt-shift", ",", cwrap(function()
-        log.i("Attempting to move to prev display")
         moveWindowToDisplayLTR("west")
     end))
 
