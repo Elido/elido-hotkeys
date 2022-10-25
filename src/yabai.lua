@@ -13,10 +13,18 @@ function getAllFocusedWindows()
     return execTaskInShellSync("yabai -m query --windows | jq -rj '. | map(select(.[\"has-focus\"] == true)) | .'")
 end
 
--- Gets the currently focused space. It can be a space different from the space of the currently focused window.
--- This is especially true if the window doesn't have a top menu
 function getFocusedSpace()
-    return json.decode(execTaskInShellSync("yabai -m query --spaces | jq -rj '. | map(select(.[\"has-focus\"] == true)) | .[0]'"))
+    -- always try to derive focus from a window if possible
+    local win = getFocusedWindow()
+    local spaceIndex
+
+    if win ~= nil then
+        spaceIndex = toint(win["space"])
+        return json.decode(execTaskInShellSync("yabai -m query --spaces --space "..spaceIndex))
+    else
+        -- if there's no window just get the space that says it's in focus
+        return json.decode(execTaskInShellSync("yabai -m query --spaces | jq -rj '. | map(select(.[\"has-focus\"] == true)) | .[0]'"))
+    end
 end
 
 function getFocusedSpaceIndexFromWindow()
@@ -37,6 +45,33 @@ function getFocusedWindow()
     end
 
     return json.decode(winStr)
+end
+
+function getDisplay(index)
+    local disStr = execTaskInShellSync("yabai -m query --displays --display "..index)
+
+    -- no display found with that index
+    if disStr == "" then
+        return nil
+    end
+
+    return json.decode(disStr)
+end
+
+function getFocusedDisplay()
+    -- always try to derive focus from a window if possible
+    local win = getFocusedWindow()
+    local displayIndex
+
+    if win ~= nil then
+        displayIndex = toint(win["display"])
+    else
+        -- if there's no focused window, get it from the space
+        local space = getFocusedSpace()
+        displayIndex = toint(space["display"])
+    end
+
+    return getDisplay(displayIndex)
 end
 
 function getSortedDisplays()
@@ -185,22 +220,31 @@ function gotoDisplay(display_sel)
     execTaskInShellSync("yabai -m display --focus "..toint(displays[targetIndex]["index"]))
 end
 
-function gotoSpace(space_sel)
+function gotoSpace(space_sel, withinDisplay)
     if space_sel == "next" or space_sel == "prev" or space_sel == "east" or space_sel == "west" then
-        local focusedSpaceIndex = getFocusedSpaceIndexFromWindow()
-        local spaces = json.decode(execTaskInShellSync("yabai -m query --spaces"))
-        local spacePos = 0
+        local focusedSpace = getFocusedSpace()
+        local spaces
 
+        if withinDisplay == true then
+            local focusedDisplay = getFocusedDisplay()
+            spaces = focusedDisplay["spaces"]
+        else
+            spaces = json.decode(execTaskInShellSync("yabai -m query --spaces"))
+        end
+
+        local spacePos = 0
         for k,v in ipairs(spaces) do
-            -- focusedSpaceIndex might be nil if no window was focused, so we fallback to yabai's space focus
-            if focusedSpaceIndex == nil then
-                if v["has-focus"] == true then
-                    spacePos = k
-                end
-            else
-                if toint(v["index"]) == focusedSpaceIndex then
-                    spacePos = k
-                end
+            local i
+
+            -- spaces can be a table of space indexes or a table of tables (space objects)
+            if type(v) == "number" then
+                i = toint(v)
+            elseif type(v) == "table" then
+                i = toint(v["index"])
+            end
+
+            if i == toint(focusedSpace["index"]) then
+                spacePos = k
             end
         end
 

@@ -1,9 +1,3 @@
----
---- DateTime: 10/4/22 12:41 AM
----
-
-px = require("posix.unistd")
-
 function cwrap(func)
     return function()
         coroutine.wrap(func)()
@@ -32,19 +26,6 @@ function toint(val)
 		return nil
 	end
 	return math.floor(tonumber(val))
-end
-
-function read_all(reader)
-    local bufsize = 4096
-    local out = {}
-    local i = 1
-    while true do
-        local buf = px.read(reader, bufsize)
-        if buf == nil or #buf == 0 then break end
-        out[i] = buf
-        i = i + 1
-    end
-    return out
 end
 
 function execTaskInShellAsync(cmdWithArgs, callback, withEnv)

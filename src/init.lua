@@ -1,14 +1,6 @@
----
---- DateTime: 10/3/22 7:51 PM
----
-
 -- Setup logger
 log = hs.logger.new("elido-hotkeys", "debug")
 debugMode = false
-
--- Include external libs
-posix = require("posix")
-require("popen3")
 
 -- Include local libs
 require("utils")
@@ -145,10 +137,10 @@ cwrap(function()
 
     -- Switch Space
     hs.hotkey.bind("alt", ";", cwrap(function()
-        gotoSpace("prev")
+        gotoSpace("prev", true)
     end))
     hs.hotkey.bind("alt", "'", cwrap(function()
-        gotoSpace("next")
+        gotoSpace("next", true)
     end))
 
     -- Toggle float setting of window
