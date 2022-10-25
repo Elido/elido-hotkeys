@@ -28,20 +28,20 @@ This project contains my yabai configuration as well as hotkey setup using hamme
 | ⌥ + ⇧ + ⌃ + `s` | Shutdown Yabai            |
 
 ### Window
-| hotkey      | description                                                             |
-|-------------|-------------------------------------------------------------------------|
-| ⌥ + ⇧ + `j` | move window south                                                       |
-| ⌥ + ⇧ + `k` | move window north                                                       |
-| ⌥ + ⇧ + `l` | move window east                                                        |
-| ⌥ + ⇧ + `h` | move window west                                                        |
-| ⌥ + `f`     | toggle window zoom - fullscreen                                         |
-| ⌥ + ⇧ + `f` | toggle window zoom - parent                                             |
-| ⌥ + `.`     | move window to the next space *within the current display* and focus it |
-| ⌥ + `,`     | move window to the prev space *within the current display* and focus it |
-| ⌥ + ⇧ + `.` | move window to the east display and focus it                            |
-| ⌥ + ⇧ + `,` | move window to the west display and focus it                            |
-| ⌥ + `m`     | minimize current window and focus one in the current space              |
-| ⌥ + `d`     | toggle whether the currently focused window floats or not               |
+| hotkey      | description                                                               |
+|-------------|---------------------------------------------------------------------------|
+| ⌥ + ⇧ + `j` | move window south                                                         |
+| ⌥ + ⇧ + `k` | move window north                                                         |
+| ⌥ + ⇧ + `l` | move window east                                                          |
+| ⌥ + ⇧ + `h` | move window west                                                          |
+| ⌥ + `f`     | toggle window zoom - fullscreen                                           |
+| ⌥ + ⇧ + `f` | toggle window zoom - parent                                               |
+| ⌥ + `.`     | move window to the next space **within the current display** and focus it |
+| ⌥ + `,`     | move window to the prev space **within the current display** and focus it |
+| ⌥ + ⇧ + `.` | move window to the east display and focus it                              |
+| ⌥ + ⇧ + `,` | move window to the west display and focus it                              |
+| ⌥ + `m`     | minimize current window and focus one in the current space                |
+| ⌥ + `d`     | toggle whether the currently focused window floats or not                 |
 
 ### Space
 | hotkey          | description                                                         |
@@ -53,16 +53,16 @@ This project contains my yabai configuration as well as hotkey setup using hamme
 
 ### Focus
 
-| hotkey          | description                                                   |
-|-----------------|---------------------------------------------------------------|
-| ⌥ + `j`         | focus window south                                            |
-| ⌥ + `k`         | focus window north                                            |
-| ⌥ + `l`         | focus window east                                             |
-| ⌥ + `h`         | focus window west                                             |
-| ⌥ + `[`         | move focus to the west display (cycle)                        |
-| ⌥ + `]`         | move focus to the east display (cycle)                        |
-| ⌥ + `;`         | move focus to prev space *within the current display* (cycle) |
-| ⌥ + `'`         | move focus to next space *within the current display* (cycle) |
+| hotkey          | description                                                     |
+|-----------------|-----------------------------------------------------------------|
+| ⌥ + `j`         | focus window south                                              |
+| ⌥ + `k`         | focus window north                                              |
+| ⌥ + `l`         | focus window east                                               |
+| ⌥ + `h`         | focus window west                                               |
+| ⌥ + `[`         | move focus to the west display (cycle)                          |
+| ⌥ + `]`         | move focus to the east display (cycle)                          |
+| ⌥ + `;`         | move focus to prev space **within the current display** (cycle) |
+| ⌥ + `'`         | move focus to next space **within the current display** (cycle) |
 
 ## FAQ
 
