@@ -8,7 +8,7 @@ require("yabai")
 
 -- Debugging hotkeys
 cwrap(function()
-	debugMode = getenv("ELIDO_HOTKEY_DEBUG") == "1"
+    debugMode = getenv("ELIDO_HOTKEY_DEBUG") == "1"
 
     -- Check if debug mode is enabled
     if debugMode then

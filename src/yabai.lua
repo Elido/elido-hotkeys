@@ -20,7 +20,7 @@ function getFocusedSpace()
 
     if win ~= nil then
         spaceIndex = toint(win["space"])
-        return json.decode(execTaskInShellSync("yabai -m query --spaces --space "..spaceIndex))
+        return json.decode(execTaskInShellSync("yabai -m query --spaces --space " .. spaceIndex))
     else
         -- if there's no window just get the space that says it's in focus
         return json.decode(execTaskInShellSync("yabai -m query --spaces | jq -rj '. | map(select(.[\"has-focus\"] == true)) | .[0]'"))
@@ -31,7 +31,9 @@ function getFocusedSpaceIndexFromWindow()
     local win = getFocusedWindow()
 
     -- if there's no window then return nil
-    if win == nil then return nil end
+    if win == nil then
+        return nil
+    end
 
     return toint(win["space"])
 end
@@ -48,7 +50,7 @@ function getFocusedWindow()
 end
 
 function getWindow(index)
-    local winStr = execTaskInShellSync("yabai -m query --windows --window "..index)
+    local winStr = execTaskInShellSync("yabai -m query --windows --window " .. index)
 
     -- no display found with that index
     if winStr == "" then
@@ -59,7 +61,7 @@ function getWindow(index)
 end
 
 function getDisplay(index)
-    local disStr = execTaskInShellSync("yabai -m query --displays --display "..index)
+    local disStr = execTaskInShellSync("yabai -m query --displays --display " .. index)
 
     -- no display found with that index
     if disStr == "" then
@@ -101,7 +103,7 @@ function getSortedDisplays()
 
     table.sort(order)
 
-    for i,n in ipairs(order) do
+    for i, n in ipairs(order) do
         table.insert(sorted, displays[n])
     end
 
@@ -146,19 +148,19 @@ end
 function moveWindowToSpace(space_sel, winId)
     local win
 
-	if winId == nil then
-		win = getFocusedWindow()
+    if winId == nil then
+        win = getFocusedWindow()
     else
         win = getWindow(toint(winId))
-	end
+    end
 
-	local spacesLen = toint(execTaskInShellSync("yabai -m query --spaces | jq -rj '. | length'"))
+    local spacesLen = toint(execTaskInShellSync("yabai -m query --spaces | jq -rj '. | length'"))
 
-	if spacesLen > 1 then
+    if spacesLen > 1 then
         -- adding the window selector to move command solves some buggy behavior by yabai when dealing with windows without menubars
-		execTaskInShellSync("yabai -m window "..toint(win["id"]).." --space " .. space_sel)
-		execTaskInShellSync("yabai -m window --focus " .. toint(win["id"]))
-	end
+        execTaskInShellSync("yabai -m window " .. toint(win["id"]) .. " --space " .. space_sel)
+        execTaskInShellSync("yabai -m window --focus " .. toint(win["id"]))
+    end
 end
 
 -- Move the window to another space within the current display
@@ -166,42 +168,46 @@ end
 function moveWindowToSpaceWithinDisplay(space_sel)
     local win = getFocusedWindow()
     -- There is no window focused so we do nothing
-    if win == nil then return end
+    if win == nil then
+        return
+    end
 
     local currentDisplayIndex = toint(win["display"])
     local currentSpaceIndex = toint(win["space"])
-	local display = json.decode(execTaskInShellSync([[yabai -m query --displays | jq -rj ". | map(select(.[\"index\"] == ]]..currentDisplayIndex..[[)) | .[0]"]]))
-	local spaces = display["spaces"]
+    local display = json.decode(execTaskInShellSync([[yabai -m query --displays | jq -rj ". | map(select(.[\"index\"] == ]] .. currentDisplayIndex .. [[)) | .[0]"]]))
+    local spaces = display["spaces"]
 
-	local spacePos = 1
-	for k, v in pairs(spaces) do
-		if toint(v) == currentSpaceIndex then
-			spacePos = k
-		end
-	end
+    local spacePos = 1
+    for k, v in pairs(spaces) do
+        if toint(v) == currentSpaceIndex then
+            spacePos = k
+        end
+    end
 
-	local targetSpace = cycleTableIndex(spaces, spacePos, space_sel)
+    local targetSpace = cycleTableIndex(spaces, spacePos, space_sel)
 
     -- if the target is different from the spacePos then move the window!
-	if targetSpace ~= spacePos then
-		moveWindowToSpace(toint(spaces[targetSpace]), toint(win["id"]))
-	end
+    if targetSpace ~= spacePos then
+        moveWindowToSpace(toint(spaces[targetSpace]), toint(win["id"]))
+    end
 end
 
 function moveWindowToDisplayLTR(display_sel)
     local displays = getSortedDisplays()
     local win = getFocusedWindow()
     -- There is no window focused so we do nothing
-    if win == nil then return end
+    if win == nil then
+        return
+    end
 
     local focusedIndex = getFocusedDisplayIndexFromWindow(displays, win)
-	local targetIndex = cycleTableIndex(displays, focusedIndex, display_sel)
+    local targetIndex = cycleTableIndex(displays, focusedIndex, display_sel)
 
-	-- If there is only one display, behave like you just want to move the space
-	if targetIndex == focusedIndex then
-		moveWindowToSpaceWithinDisplay(display_sel)
-		return
-	end
+    -- If there is only one display, behave like you just want to move the space
+    if targetIndex == focusedIndex then
+        moveWindowToSpaceWithinDisplay(display_sel)
+        return
+    end
 
     moveWindowToSpace(math.floor(displays[targetIndex]["spaces"][1]), math.floor(win["id"]))
 end
@@ -212,7 +218,7 @@ function gotoDisplay(display_sel)
 
     -- There is no window focused or the selection is not supported so use yabai builtin
     if supportedSel == false then
-        execTaskInShellSync("yabai -m display --focus "..display_sel)
+        execTaskInShellSync("yabai -m display --focus " .. display_sel)
         return
     end
 
@@ -220,7 +226,7 @@ function gotoDisplay(display_sel)
     local focusedIndex
 
     if win == nil then
-        focusedIndex = getFocusedDisplayIndexFromSpace(displays,getFocusedSpace())
+        focusedIndex = getFocusedDisplayIndexFromSpace(displays, getFocusedSpace())
     else
         focusedIndex = getFocusedDisplayIndexFromWindow(displays, win)
     end
@@ -233,7 +239,7 @@ function gotoDisplay(display_sel)
         return
     end
 
-    execTaskInShellSync("yabai -m display --focus "..toint(displays[targetIndex]["index"]))
+    execTaskInShellSync("yabai -m display --focus " .. toint(displays[targetIndex]["index"]))
 end
 
 function gotoSpace(space_sel, withinDisplay)
@@ -249,7 +255,7 @@ function gotoSpace(space_sel, withinDisplay)
         end
 
         local spacePos = 0
-        for k,v in ipairs(spaces) do
+        for k, v in ipairs(spaces) do
             local i
 
             -- spaces can be a table of space indexes or a table of tables (space objects)
@@ -265,8 +271,8 @@ function gotoSpace(space_sel, withinDisplay)
         end
 
         targetIndex = cycleTableIndex(spaces, spacePos, space_sel)
-        execTaskInShellSync("yabai -m space --focus "..targetIndex)
+        execTaskInShellSync("yabai -m space --focus " .. targetIndex)
     else
-       execTaskInShellSync("yabai -m space --focus "..space_sel)
+        execTaskInShellSync("yabai -m space --focus " .. space_sel)
     end
 end
