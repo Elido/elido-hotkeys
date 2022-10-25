@@ -47,6 +47,17 @@ function getFocusedWindow()
     return json.decode(winStr)
 end
 
+function getWindow(index)
+    local winStr = execTaskInShellSync("yabai -m query --windows --window "..index)
+
+    -- no display found with that index
+    if winStr == "" then
+        return nil
+    end
+
+    return json.decode(winStr)
+end
+
 function getDisplay(index)
     local disStr = execTaskInShellSync("yabai -m query --displays --display "..index)
 
@@ -133,15 +144,20 @@ end
 -- This call will hang hammerspoon if done on the main thread (https://github.com/koekeishiya/yabai/issues/502#issuecomment-633353477)
 -- under the hood execTaskInShellSync expects to  be called within a coroutine to solve that issue
 function moveWindowToSpace(space_sel, winId)
+    local win
+
 	if winId == nil then
-		winId = getFocusedWindowId()
+		win = getFocusedWindow()
+    else
+        win = getWindow(toint(winId))
 	end
 
 	local spacesLen = toint(execTaskInShellSync("yabai -m query --spaces | jq -rj '. | length'"))
 
 	if spacesLen > 1 then
-		execTaskInShellSync("yabai -m window --space " .. space_sel)
-		execTaskInShellSync("yabai -m window --focus " .. winId)
+        -- adding the window selector to move command solves some buggy behavior by yabai when dealing with windows without menubars
+		execTaskInShellSync("yabai -m window "..toint(win["id"]).." --space " .. space_sel)
+		execTaskInShellSync("yabai -m window --focus " .. toint(win["id"]))
 	end
 end
 
