@@ -1,4 +1,4 @@
-# Elido-Hotkeys
+# Elido-Hotkeys-Test
 
 This project contains my yabai configuration as well as hotkey setup using hammerspoon. It's multi-display friendly and supports cycling through spaces and displays. This project is for Mac only
 
