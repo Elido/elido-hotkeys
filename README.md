@@ -47,9 +47,11 @@ This project contains my yabai configuration as well as hotkey setup using hamme
 | hotkey          | description                                                         |
 |-----------------|---------------------------------------------------------------------|
 | ⌥ + `b`         | toggle space balance (equalize the space windows use on the screen) |
-| ⌥ + `-`         | create a new space on the current display                           |
-| ⌥ + `=`         | delete the current space                                            |
+| ⌥ + `=`         | create a new space on the current display                           |
+| ⌥ + `-`         | delete the current space                                            |
 | ⌥ + `s`         | toggle window in space split                                        |
+
+To cycle through spaces within the current display use `⌥ + ;` for the previous space and `⌥ + '` for the next space. These shortcuts wrap when reaching the first or last space. Use `⌥ + ,` and `⌥ + .` to move the focused window instead. Tip: after creating a new space with `⌥ + =`, press `⌥ + '` to focus it immediately.
 
 ### Focus
 
@@ -73,3 +75,11 @@ Some long-running calls to yabai will hang hammerspoon. The simple solution is t
 ### Slow hammerspoon config initial and reload time
 
 We use a `SHELL` with the login flag to pull the `PATH` env and as well as our debug flag `ELIDO_HOTKEYS_DEBUG`. The speed is dependant on the time it takes for your shell prompt to load
+
+### Debugging
+
+Set `ELIDO_HOTKEYS_DEBUG=1` before starting Hammerspoon to enable additional debug output. When enabled you can use:
+- ⌥ + ⇧ + d to log the focused windows
+- ⌥ + ⇧ + c to log windows for the focused app
+- ⌥ + ⇧ + z to log the currently focused space
+
