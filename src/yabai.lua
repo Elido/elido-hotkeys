@@ -164,7 +164,7 @@ function moveWindowToSpace(space_sel, winId)
 end
 
 -- Move the window to another space within the current display
--- If no other space exist, create one
+-- If no other space exists, create one
 function moveWindowToSpaceWithinDisplay(space_sel)
     local win = getFocusedWindow()
     -- There is no window focused so we do nothing
@@ -176,6 +176,13 @@ function moveWindowToSpaceWithinDisplay(space_sel)
     local currentSpaceIndex = toint(win["space"])
     local display = json.decode(execTaskInShellSync([[yabai -m query --displays | jq -rj ". | map(select(.[\"index\"] == ]] .. currentDisplayIndex .. [[)) | .[0]"]]))
     local spaces = display["spaces"]
+
+    -- create a new space when only one exists on this display
+    if #spaces <= 1 then
+        execTaskInShellSync("yabai -m display --focus " .. currentDisplayIndex .. "; yabai -m space --create")
+        display = json.decode(execTaskInShellSync([[yabai -m query --displays | jq -rj ". | map(select(.[\"index\"] == ]] .. currentDisplayIndex .. [[)) | .[0]"]]))
+        spaces = display["spaces"]
+    end
 
     local spacePos = 1
     for k, v in pairs(spaces) do
