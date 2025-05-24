@@ -17,6 +17,9 @@ function updateDisplayHistory()
     local display = toint(space["display"])
     local spaceIdx = toint(space["index"])
 
+    -- Update the history only when the display changes. This ensures that
+    -- lastDisplayIndex and lastSpaceIndex always reflect the previous display
+    -- and space before the current display change.
     if currentDisplayIndex ~= nil and display ~= currentDisplayIndex then
         lastDisplayIndex = currentDisplayIndex
         lastSpaceIndex = currentSpaceIndex
