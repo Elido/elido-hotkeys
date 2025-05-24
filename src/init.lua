@@ -6,6 +6,41 @@ debugMode = false
 require("utils")
 require("yabai")
 
+-- Track the last active display and space
+lastDisplayIndex = nil
+lastSpaceIndex = nil
+currentDisplayIndex = nil
+currentSpaceIndex = nil
+
+function updateDisplayHistory()
+    local space = getFocusedSpace()
+    local display = toint(space["display"])
+    local spaceIdx = toint(space["index"])
+
+    if currentDisplayIndex ~= nil and display ~= currentDisplayIndex then
+        lastDisplayIndex = currentDisplayIndex
+        lastSpaceIndex = currentSpaceIndex
+    end
+
+    currentDisplayIndex = display
+    currentSpaceIndex = spaceIdx
+end
+
+-- Watch for space changes to keep track of display history
+spaceWatcher = hs.spaces.watcher.new(function()
+    updateDisplayHistory()
+end)
+spaceWatcher:start()
+
+-- Watch for window focus changes as well
+winWatcher = hs.window.filter.new(nil)
+winWatcher:subscribe(hs.window.filter.windowFocused, function()
+    updateDisplayHistory()
+end)
+
+-- Initialize history state
+updateDisplayHistory()
+
 -- Debugging hotkeys
 cwrap(function()
     debugMode = getenv("ELIDO_HOTKEYS_DEBUG") == "1"
@@ -108,6 +143,11 @@ cwrap(function()
     -- Send Window to next display
     hs.hotkey.bind("alt-shift", ",", cwrap(function()
         moveWindowToDisplayLTR("west")
+    end))
+
+    -- Send window to the last active display/space
+    hs.hotkey.bind("alt-shift", "p", cwrap(function()
+        moveWindowToLastDisplaySpace()
     end))
 
     -- Send window to the next space

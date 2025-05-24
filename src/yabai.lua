@@ -219,6 +219,20 @@ function moveWindowToDisplayLTR(display_sel)
     moveWindowToSpace(math.floor(displays[targetIndex]["spaces"][1]), math.floor(win["id"]))
 end
 
+-- Move the focused window to the last active display/space
+function moveWindowToLastDisplaySpace()
+    if lastSpaceIndex == nil then
+        return
+    end
+
+    local win = getFocusedWindow()
+    if win == nil then
+        return
+    end
+
+    moveWindowToSpace(lastSpaceIndex, toint(win["id"]))
+end
+
 function gotoDisplay(display_sel)
     local win = getFocusedWindow()
     local supportedSel = display_sel == "next" or display_sel == "prev" or display_sel == "east" or display_sel == "west"

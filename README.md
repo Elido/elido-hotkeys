@@ -40,6 +40,7 @@ This project contains my yabai configuration as well as hotkey setup using hamme
 | ⌥ + `,`     | move window to the prev space **within the current display** and focus it |
 | ⌥ + ⇧ + `.` | move window to the east display and focus it                              |
 | ⌥ + ⇧ + `,` | move window to the west display and focus it                              |
+| ⌥ + ⇧ + `p` | move window to the last active display and focus it |
 | ⌥ + `m`     | minimize current window and focus one in the current space                |
 | ⌥ + `d`     | toggle whether the currently focused window floats or not                 |
 
